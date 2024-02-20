@@ -85,7 +85,7 @@ fi
 
 ### Set zsh as shell ###
 read -n1 -rep 'Would you like to set your shell to ZSH? (y,n)' ZSH
-if [[$ZSH == "Y" || $ZSH == "y"]]; then
+if [[ $ZSH == "Y" || $ZSH == "y" ]]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
