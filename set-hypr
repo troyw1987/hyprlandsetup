@@ -102,6 +102,7 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     cp -R swaylock ~/.config/
     cp -R wofi ~/.config/
     cp .zshrc ~/.zshrc
+    cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
 
     # Set some files as exacutable 
     chmod +x ~/.config/hypr/xdg-portal-hyprland
