@@ -87,6 +87,10 @@ fi
 read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "Copying config files...\n"
+
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    cp heapbytes.zsh-theme .oh-my-zsh/themes/heapbytes.zsh-theme
+
     cp -R hypr ~/.config/
     cp -R kitty ~/.config/
     cp -R mako ~/.config/
@@ -98,9 +102,6 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     # Set some files as exacutable 
     chmod +x ~/.config/hypr/xdg-portal-hyprland
     chmod +x ~/.config/waybar/scripts/waybar-wttr.py
-
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
 fi
 
 ### Script is done ###
