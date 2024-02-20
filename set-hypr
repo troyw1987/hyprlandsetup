@@ -94,10 +94,13 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     cp -R swaylock ~/.config/
     cp -R wofi ~/.config/
     cp .zshrc ~/.zshrc
-    
+
     # Set some files as exacutable 
     chmod +x ~/.config/hypr/xdg-portal-hyprland
     chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
 fi
 
 ### Script is done ###
