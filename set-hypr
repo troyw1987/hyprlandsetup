@@ -83,14 +83,18 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
 fi
 
+### Set zsh as shell ###
+read -n1 -rep 'Would you like to set your shell to ZSH? (y,n)' ZSH
+if [[$ZSH == "Y" || $ZSH == "y"]]; then
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
 ### Copy Config Files ###
 read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "Copying config files...\n"
 
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     cp heapbytes.zsh-theme .oh-my-zsh/themes/heapbytes.zsh-theme
-
     cp -R hypr ~/.config/
     cp -R kitty ~/.config/
     cp -R mako ~/.config/
