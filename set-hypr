@@ -94,7 +94,7 @@ read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
     echo -e "Copying config files...\n"
 
-    cp heapbytes.zsh-theme .oh-my-zsh/themes/heapbytes.zsh-theme
+    cp heapbytes.zsh-theme .oh-my-zsh/themes
     cp -R hypr ~/.config/
     cp -R kitty ~/.config/
     cp -R mako ~/.config/
