@@ -103,7 +103,7 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     cp -R waybar ~/.config/
     cp -R swaylock ~/.config/
     cp -R wofi ~/.config/
-
+    cp -R btop ~/.config/
 
     # Various Individual Files
     cp ./various/.zshrc ~/.zshrc
