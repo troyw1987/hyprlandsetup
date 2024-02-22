@@ -108,11 +108,13 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
     # Various Individual Files
     cp ./various/.zshrc ~/.zshrc
     cp ./various/heapbytes.zsh-theme ~/.oh-my-zsh/themes
+
+    mkdir -p ~/.config/vesktop/themes/
     cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
 
     # Grub Theme
 
-    sudo cp ./various/catppuccin-mocha-grub-theme/ /boot/EFI/BOOT/
+    sudo cp ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
     sudo cp ./various/grub /etc/default/grub
     # Set Cursor
     mkdir -p ~/.icons/default
