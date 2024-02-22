@@ -114,7 +114,7 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
 
     # Grub Theme
 
-    sudo cp ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
+    sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
     sudo cp ./various/grub /etc/default/grub
     # Set Cursor
     mkdir -p ~/.icons/default
