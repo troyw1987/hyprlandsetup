@@ -72,7 +72,8 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     unzip noto-fonts noto-fonts-cjk \
     noto-fonts-emoji noto-fonts-extra \
     nerd-fonts cliphist firefox \
-    ly apple_cursor
+    ly apple_cursor spicetify-cli \
+    wttrbar
 
     systemctl enable ly
 

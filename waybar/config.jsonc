@@ -18,28 +18,17 @@
         "all-outputs": true,
         "on-click": "activate",
         "persistent_workspaces": {
-            "1": [],
-            "2": [],
-            "3": [],
-            "4": [],
-            "5": [],
-            "6": [],
-            "7": [],
-            "8": [],
-            "9": [],
-            "10": []
+            "1": []
         }
     },
     
-
-   "custom/weather" : {
-        //shows the current weather and forecast
-        "tooltip" : true,
-        "format" : "{}",
-        "interval" : 30,
-        "exec" : "~/.config/waybar/scripts/waybar-wttr.py",
-        "return-type" : "json"
-    },
+    "custom/weather": {
+    "format": "{}°F",
+    "tooltip": true,
+    "interval": 3600,
+    "exec": "wttrbar --fahrenheit --location Phoenix --hide-conditions",
+    "return-type": "json"
+  },
 
     "tray": {
         "icon-size": 18,
