@@ -25,8 +25,8 @@
     "custom/weather": {
     "format": "{}°F",
     "tooltip": true,
-    "interval": 3600,
-    "exec": "wttrbar --fahrenheit --location Phoenix --hide-conditions",
+    "interval": 600,
+    "exec": "eval $(sh ~/.config/waybar/scripts/weather.sh)",
     "return-type": "json"
   },
 
