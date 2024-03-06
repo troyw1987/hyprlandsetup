@@ -8,7 +8,7 @@ Git clone this repo either in /Opt and `chmod -R user:user /Opt/hyprlandsetup` o
 The script "set-hypr" will install everything for you and optionally copy all of my dotfiles.
 
 
-# Notable things come are installed:
+# Notable things which get installed:
 
 ```
 Wofi(App launcher) [SUPER+R]
