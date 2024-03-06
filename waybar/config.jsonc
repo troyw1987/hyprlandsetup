@@ -68,7 +68,7 @@
     "pulseaudio": {
         "format": "{icon} {volume}%",
         "tooltip": false,
-        "format-muted": "󰸈",
+        "format-muted": "󰸈 Muted",
         "on-click": "pamixer -t",
         "on-scroll-up": "pamixer -i 5",
         "on-scroll-down": "pamixer -d 5",
@@ -98,6 +98,7 @@
         "thermal-zone": 0,
         "format": "{temperatureF}°F ",
         "critical-threshold": 140,
+        "interval": 5,
         "format-critical": "{temperatureF}°F "
     },
 
