@@ -3,9 +3,10 @@ Start with a minimal Arch install with yay.
 
 Git clone this repo either in /Opt and `chmod -R user:user /Opt/hyprlandsetup` or as I'd recomend, make a ~/git folder and clone it in there.
 
-`cd` into the hyprlandsetup folder and run `chmod +x ./set-hypr` to allow it to execute. Then run `./set-hypr` to execute the bash setup script.
+`cd` into the hyprlandsetup folder and run `chmod +x ./set-hypr` to ensure it is executeable. 
+Then run `./set-hypr` to execute the bash setup script .
 
-The script "set-hypr" will install everything for you and optionally copy all of my dotfiles.
+This script `"set-hypr"` will install everything for you and optionally copy all of my dotfiles.
 
 
 # Notable things which get installed:
