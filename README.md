@@ -1,7 +1,8 @@
 # Installation:
 Start with a minimal Arch install with yay.
 
-Git clone this repo either in /Opt and `chmod -R user:user /Opt/hyprlandsetup` or as I'd recomend, make a ~/git folder and clone it in there.
+Git clone this repo in /Opt and `chmod -R user:user /Opt/hyprlandsetup` 
+Or as I'd recommend: make a ~/git folder and clone it in there
 
 Run `./set-hypr` and follow the install.
 
