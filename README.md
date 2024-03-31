@@ -29,7 +29,7 @@ Swaylock(Lock Screen)
 
 General:
 ```
-Super + R -> App Launchere
+Super + R -> App Launcher
 Super + Enter -> Terminal
 Super + Z -> Mutes Volume and locks screen
 Super + S -> Opens special workspaces
