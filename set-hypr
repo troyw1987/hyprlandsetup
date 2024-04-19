@@ -36,93 +36,93 @@
 
 #### Check for yay ####
 ISYAY=/sbin/yay
-if [ -f "$ISYAY" ]; then 
-    echo -e "yay was located, moving on.\n"
-    yay -Suy
-else 
-    echo -e "yay was not located, please install yay. Exiting script.\n"
-    exit 
+if [ -f "$ISYAY" ]; then
+	echo -e "yay was located, moving on.\n"
+	yay -Suy
+else
+	echo -e "yay was not located, please install yay. Exiting script.\n"
+	exit
 fi
 
 ### Disable wifi powersave mode ###
 read -n1 -rep 'Would you like to disable wifi powersave? (y,n)' WIFI
 if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
-    LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
-    echo -e "The following has been added to $LOC.\n"
-    echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
-    echo -e "\n"
-    echo -e "Restarting NetworkManager service...\n"
-    sudo systemctl restart NetworkManager
-    sleep 3
+	LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
+	echo -e "The following has been added to $LOC.\n"
+	echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
+	echo -e "\n"
+	echo -e "Restarting NetworkManager service...\n"
+	sudo systemctl restart NetworkManager
+	sleep 3
 fi
 
 ### Install all of the above pacakges ####
 read -n1 -rep 'Would you like to install the packages? (y,n)' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
-    yay -S --noconfirm hyprland kitty waybar \
-    swaybg swaylock-effects wofi wlogout mako thunar \
-    ttf-jetbrains-mono-nerd \
-    polkit-gnome python-requests starship \
-    swappy grim slurp pamixer brightnessctl gvfs \
-    bluez bluez-utils lxappearance xfce4-settings \
-    dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland \
-    vencord nordvpn-bin ttf-vista-fonts btop \
-    neovim zsh ripgrep \
-    jq stow npm \
-    unzip noto-fonts noto-fonts-cjk \
-    noto-fonts-emoji noto-fonts-extra \
-    nerd-fonts cliphist firefox \
-    ly apple_cursor spicetify-cli \
-    wttrbar geoip
+	yay -S --noconfirm hyprland kitty waybar \
+		swaybg swaylock-effects wofi wlogout mako thunar \
+		ttf-jetbrains-mono-nerd \
+		polkit-gnome python-requests starship \
+		swappy grim slurp pamixer brightnessctl gvfs \
+		bluez bluez-utils lxappearance xfce4-settings \
+		dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland \
+		vencord nordvpn-bin ttf-vista-fonts btop \
+		neovim zsh ripgrep \
+		jq stow npm \
+		unzip noto-fonts noto-fonts-cjk \
+		noto-fonts-emoji noto-fonts-extra \
+		nerd-fonts cliphist firefox \
+		ly apple_cursor spicetify-cli \
+		wttrbar geoip
 
-    systemctl enable ly
+	systemctl enable ly
 
-    # Start the bluetooth service
-    echo -e "Starting the Bluetooth Service...\n"
-    sudo systemctl enable --now bluetooth.service
-    sleep 2
-    
-    # Clean out other portals
-    echo -e "Cleaning out conflicting xdg portals...\n"
-    yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
+	# Start the bluetooth service
+	echo -e "Starting the Bluetooth Service...\n"
+	sudo systemctl enable --now bluetooth.service
+	sleep 2
+
+	# Clean out other portals
+	echo -e "Cleaning out conflicting xdg portals...\n"
+	yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
 fi
 
 ### Set zsh as shell ###
 read -n1 -rep 'Would you like to set your shell to ZSH? (y,n)' ZSH
 if [[ $ZSH == "Y" || $ZSH == "y" ]]; then
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 ### Copy Config Files ###
 read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
-    echo -e "Copying config files...\n"
+	echo -e "Copying config files...\n"
 
-    cp -R hypr ~/.config/
-    cp -R kitty ~/.config/
-    cp -R mako ~/.config/
-    cp -R waybar ~/.config/
-    cp -R swaylock ~/.config/
-    cp -R wofi ~/.config/
-    cp -R btop ~/.config/
-    cp -R vesktop ~/.config/
+	cp -R hypr ~/.config/
+	cp -R kitty ~/.config/
+	cp -R mako ~/.config/
+	cp -R waybar ~/.config/
+	cp -R swaylock ~/.config/
+	cp -R wofi ~/.config/
+	cp -R btop ~/.config/
+	cp -R vesktop ~/.config/
+	cp -R nvim ~/.config/
 
-    # Various Individual Files
-    cp ./various/.zshrc ~/.zshrc
-    mkdir -p ~/.config/vesktop/themes/
-    cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
+	# Various Individual Files
+	cp ./various/.zshrc ~/.zshrc
+	mkdir -p ~/.config/vesktop/themes/
+	cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
 
-    # Grub Theme
+	# Grub Theme
 
-    sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
-    sudo cp ./various/grub /etc/default/grub
-    # Set Cursor
-    mkdir -p ~/.icons/default
-    
+	sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
+	sudo cp ./various/grub /etc/default/grub
+	# Set Cursor
+	mkdir -p ~/.icons/default
 
-    # Set some files as exacutable 
-    chmod +x ~/.config/hypr/xdg-portal-hyprland
-    chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+	# Set some files as exacutable
+	chmod +x ~/.config/hypr/xdg-portal-hyprland
+	chmod +x ~/.config/waybar/scripts/waybar-wttr.py
 fi
 
 ### Script is done ###
@@ -130,7 +130,7 @@ echo -e "Script had completed.\n"
 echo -e "You can start Hyprland by typing Hyprland (note the capital H).\n"
 read -n1 -rep 'Would you like to start Hyprland now? (y,n)' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
-    exec Hyprland
+	exec Hyprland
 else
-    exit
+	exit
 fi
