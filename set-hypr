@@ -112,8 +112,6 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
 	cp ./various/heapbytes.zsh-theme ~/.oh-my-zsh/themes
 	cp ./various/.zshrc ~/.zshrc
 
-	cp ./various/.gtkrc-2.0 ~/.gtkrc-2.0
-
 	mkdir -p ~/.config/vesktop/themes/
 	cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
 
@@ -130,6 +128,10 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
 	# Set some files as exacutable
 	chmod +x ~/.config/hypr/xdg-portal-hyprland
 	chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+
+	# Set Catppuccin gsettings
+	gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Red-Dark
+
 fi
 
 ### Script is done ###
