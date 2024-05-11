@@ -73,7 +73,8 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 		noto-fonts-emoji noto-fonts-extra \
 		nerd-fonts cliphist firefox-developer-edition \
 		ly apple_cursor spicetify-cli \
-		wttrbar geoip
+		wttrbar geoip hypridle \
+		hyprlock
 
 	systemctl enable ly
 
