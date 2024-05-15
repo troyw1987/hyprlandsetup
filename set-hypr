@@ -1,146 +1,198 @@
-#!/bin/bash
 
-# The follwoing will attempt to install all needed packages to run Hyprland
-# This is a quick and dirty script there are no error checking
-# This script is meant to run on a clean fresh system
-#
-# Below is a list of the packages that would be installed
-#
-# hyprland: This is the Hyprland compositor
-# kitty: This is the default terminal
-# waybar: Waybar now has hyprland support
-# swaybg: This is used to set a desktop background image
-# swaylock-effects: This allows for the locking of the desktop its a fork that adds some editional visual effects
-# wofi: This is an application launcher menu
-# wlogout: This is a logout menu that allows for shutdown, reboot and sleep
-# mako: This is a graphical notification daemon
-# thunar: This is a graphical file manager
-# ttf-jetbrains-mono-nerd: Som nerd fonts for icons and overall look
-# noto-fonts-emoji: fonts needed by the weather script in the top bar
-# polkit-gnome: needed to get superuser access on some graphical appliaction
-# python-requests: needed for the weather module script to execute
-# starship: allows to customize the shell prompt
-# swappy: This is a screenshot editor tool
-# grim: This is a screenshot tool it grabs images from a Wayland compositor
-# slurp: This helps with screenshots, it selects a region in a Wayland compositor
-# pamixer: This helps with audio settings such as volume
-# brightnessctl: used to control monitor bright level
-# gvfs: adds missing functionality to thunar such as automount usb drives
-# bluez: the bluetooth service
-# bluez-utils: command line utilities to interact with bluettoth devices
-# lxappearance: used to set GTK theme
-# xfce4-settings: set of tools for xfce, needed to set GTK theme
-# dracula-gtk-theme: the Dracula theme, it fits the overall look and feel
-# dracula-icons-git" set of icons to go with the Dracula theme
-# xdg-desktop-portal-hyprland: xdg-desktop-portal backend for hyprland
+# EXEC:
+exec-once = ~/.config/hypr/xdg-portal-hyprland
+exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec-once = waybar
+exec-once = hypridle
+exec-once = hyprctl setcursor macOS-BigSur 24
 
-#### Check for yay ####
-ISYAY=/sbin/yay
-if [ -f "$ISYAY" ]; then
-	echo -e "yay was located, moving on.\n"
-	yay -Suy
-else
-	echo -e "yay was not located, please install yay. Exiting script.\n"
-	exit
-fi
 
-### Disable wifi powersave mode ###
-read -n1 -rep 'Would you like to disable wifi powersave? (y,n)' WIFI
-if [[ $WIFI == "Y" || $WIFI == "y" ]]; then
-	LOC="/etc/NetworkManager/conf.d/wifi-powersave.conf"
-	echo -e "The following has been added to $LOC.\n"
-	echo -e "[connection]\nwifi.powersave = 2" | sudo tee -a $LOC
-	echo -e "\n"
-	echo -e "Restarting NetworkManager service...\n"
-	sudo systemctl restart NetworkManager
-	sleep 3
-fi
+exec = swaybg -m fill -i ~/.config/hypr/wallpapers/egypt.png # wallpaper
 
-### Install all of the above pacakges ####
-read -n1 -rep 'Would you like to install the packages? (y,n)' INST
-if [[ $INST == "Y" || $INST == "y" ]]; then
-	yay -S --noconfirm hyprland kitty waybar \
-		swaybg swaylock-effects wofi wlogout mako thunar \
-		ttf-jetbrains-mono-nerd \
-		polkit-gnome python-requests starship \
-		swappy grim slurp pamixer brightnessctl gvfs \
-		bluez bluez-utils lxappearance xfce4-settings \
-		dracula-gtk-theme dracula-icons-git xdg-desktop-portal-hyprland \
-		vencord nordvpn-bin ttf-vista-fonts btop \
-		neovim zsh ripgrep \
-		jq stow npm \
-		unzip noto-fonts noto-fonts-cjk \
-		noto-fonts-emoji noto-fonts-extra \
-		nerd-fonts cliphist firefox-developer-edition \
-		ly apple_cursor spicetify-cli \
-		wttrbar geoip hypridle \
-		hyprlock
 
-	systemctl enable ly
 
-	# Start the bluetooth service
-	echo -e "Starting the Bluetooth Service...\n"
-	sudo systemctl enable --now bluetooth.service
-	sleep 2
+# MONITORS:
+monitor=eDP-1, 1920x1080@60, 0x0, 1
 
-	# Clean out other portals
-	echo -e "Cleaning out conflicting xdg portals...\n"
-	yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
-fi
+#SOURCE:
+source=~/.config/hypr/mocha.conf
 
-### Set zsh as shell ###
-read -n1 -rep 'Would you like to set your shell to ZSH? (y,n)' ZSH
-if [[ $ZSH == "Y" || $ZSH == "y" ]]; then
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
 
-### Copy Config Files ###
-read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
-if [[ $CFG == "Y" || $CFG == "y" ]]; then
-	echo -e "Copying config files...\n"
+# ENVIRONMENT:
+env = GDK_SCALE,1
+env = WLR_NO_HARDWARE_CURSORS,1
+env = macOS-BigSur,24
 
-	cp -R hypr ~/.config/
-	cp -R kitty ~/.config/
-	cp -R mako ~/.config/
-	cp -R waybar ~/.config/
-	cp -R swaylock ~/.config/
-	cp -R wofi ~/.config/
-	cp -R btop ~/.config/
-	cp -R vesktop ~/.config/
-	cp -R nvim ~/.config/
 
-	# Various Individual Files
-	cp ./various/heapbytes.zsh-theme ~/.oh-my-zsh/themes
-	cp ./various/.zshrc ~/.zshrc
+# CATEGORIES:
+input {
+    kb_layout = us
+    kb_variant =
+    kb_model =
+    kb_options =
+    kb_rules =
 
-	mkdir -p ~/.config/vesktop/themes/
-	cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
+    follow_mouse = 1
 
-	mkdir -p ~/.icons/default
-	ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
+    touchpad {
+        natural_scroll = no
+    }
 
-	# Grub Theme
+    sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+}
 
-	sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
-	sudo cp ./various/grub /etc/default/grub
-	# Set Cursor
-	mkdir -p ~/.icons/default
+general {
+    sensitivity = 1.8
 
-	# Set some files as exacutable
-	chmod +x ~/.config/hypr/xdg-portal-hyprland
-	chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+    gaps_in = 5
+    gaps_out = 10
+    border_size = 1
+    #col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
+    col.active_border = $red $blue 45deg
 
-	# Set Catppuccin gsettings
-	gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Red-Dark
+    col.inactive_border = 0xff$surface2Alpha
 
-fi
+    layout = dwindle
+}
 
-### Script is done ###
-echo -e "Script had completed.\n"
-echo -e "You can start Hyprland by typing Hyprland (note the capital H).\n"
-read -n1 -rep 'Would you like to start Hyprland now? (y,n)' HYP
-if [[ $HYP == "Y" || $HYP == "y" ]]; then
-	exec Hyprland
-else
-	exit
-fi
+decoration {
+    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+
+    rounding = 10
+
+    blur {
+        enabled = true
+        size = 3
+        passes = 2
+    }
+
+    inactive_opacity = 0.8
+
+    drop_shadow = no
+    shadow_range = 4
+    shadow_render_power = 3
+    col.shadow = rgba(1a1a1aee)
+}
+
+animations {
+    enabled = yes
+
+    # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
+
+    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+
+    animation = windows, 1, 7, myBezier
+    animation = windowsOut, 1, 7, default, popin 80%
+    animation = border, 1, 10, default
+    animation = borderangle, 1, 8, default
+    animation = fade, 1, 7, default
+    animation = workspaces, 1, 6, default
+}
+
+dwindle {
+    # See https://wiki.hyprland.org/Configuring/Dwindle-Layout/ for more
+    pseudotile = yes # master switch for pseudotiling. Enabling is bound to mainMod + P in the keybinds section below
+    preserve_split = yes # you probably want this
+}
+
+master {
+    # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
+    new_is_master = true
+}
+
+gestures {
+    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+    workspace_swipe = off
+}
+
+misc {
+  disable_hyprland_logo = true
+}
+
+
+# Example per-device config
+# See https://wiki.hyprland.org/Configuring/Keywords/#executing for more
+device:epic-mouse-v1 {
+}
+
+# Example windowrule v1
+# windowrule = float, ^(kitty)$
+# Example windowrule v2
+# windowrulev2 = float,class:^(kitty)$,title:^(kitty)$
+# See https://wiki.hyprland.org/Configuring/Window-Rules/ for more
+
+
+# See https://wiki.hyprland.org/Configuring/Keywords/ for more
+$mainMod = SUPER
+
+# APP BINDS:
+bind = $mainMod, RETURN, exec, kitty
+bind = $mainMod, C, killactive, 
+bind = $mainMod, M, exit, 
+bind = $mainMod, V, togglefloating, 
+bindr = $mainMod, R, exec, wofi --show drun --gtk-dark || pkill wofi
+
+# HYPR BINDS:
+
+bind = $mainMod, P, pseudo, # dwindle
+bind = $mainMod, J, togglesplit, # dwindle
+
+bind = $mainMod, left, movefocus, l
+bind = $mainMod, right, movefocus, r
+bind = $mainMod, up, movefocus, u
+bind = $mainMod, down, movefocus, d
+
+bind = $mainMod, 1, workspace, 1
+bind = $mainMod, 2, workspace, 2
+bind = $mainMod, 3, workspace, 3
+bind = $mainMod, 4, workspace, 4
+bind = $mainMod, 5, workspace, 5
+bind = $mainMod, 6, workspace, 6
+bind = $mainMod, 7, workspace, 7
+bind = $mainMod, 8, workspace, 8
+bind = $mainMod, 9, workspace, 9
+bind = $mainMod, 0, workspace, 10
+
+bind = $mainMod SHIFT, 1, movetoworkspace, 1
+bind = $mainMod SHIFT, 2, movetoworkspace, 2
+bind = $mainMod SHIFT, 3, movetoworkspace, 3
+bind = $mainMod SHIFT, 4, movetoworkspace, 4
+bind = $mainMod SHIFT, 5, movetoworkspace, 5
+bind = $mainMod SHIFT, 6, movetoworkspace, 6
+bind = $mainMod SHIFT, 7, movetoworkspace, 7
+bind = $mainMod SHIFT, 8, movetoworkspace, 8
+bind = $mainMod SHIFT, 9, movetoworkspace, 9
+bind = $mainMod SHIFT, 0, movetoworkspace, 1 
+
+bind = $mainMod, S, togglespecialworkspace, magic
+bind = $mainMod SHIFT, S, movetoworkspace, special:magic
+
+bindm = $mainMod, mouse:272, movewindow
+bindm = $mainMod, mouse:273, resizewindow
+
+# KEYBINDS:
+
+bind = , Print, exec, grim -g "$(slurp -d)" - | wl-copy
+bind=SUPER,X,toggleopaque
+
+binde=,XF86MonBrightnessUp, exec, brightnessctl s +15
+binde=,XF86MonBrightnessDown, exec, brightnessctl s 15-
+
+binde=,XF86AudioRaiseVolume,exec, pamixer -i 5
+binde=,XF86AudioLowerVolume,exec, pamixer -d 5
+
+bind=,XF86AudioMute,exec,pamixer -t
+
+bind =,XF86AudioNext,exec, playerctl next
+bind =,XF86AudioPlay,exec, playerctl play-pause
+bind =,XF86AudioPrev,exec, playerctl previous
+
+bind=$mainMod, Z, exec, swaylock
+bind=$mainMod, Z, exec, pamixer -m
+
+# MISC:
+autogenerated = 0
+
+
