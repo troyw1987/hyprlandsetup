@@ -1,6 +1,7 @@
 {
   "extras": [
-
+    "lazyvim.plugins.extras.coding.yanky",
+    "lazyvim.plugins.extras.lang.python"
   ],
   "news": {
     "NEWS.md": "3314"
