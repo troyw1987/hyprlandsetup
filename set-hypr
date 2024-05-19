@@ -114,7 +114,9 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
 	cp ./various/.zshrc ~/.zshrc
 
 	mkdir -p ~/.config/vesktop/themes/
-	cp vesktop/catppuccin-mocha.theme.css ~/.config/vesktop/themes
+	mkdir -p ~/.config/vesktop/settings/
+	cp ./vesktop/themes/catppuccin-mocha.theme.css ~/.config/vesktop/themes
+	cp ./vesktop/settings/settings.json ~/.config/vesktop/settings/
 
 	mkdir -p ~/.icons/default
 	ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
