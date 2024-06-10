@@ -54,7 +54,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 		grim slurp pamixer brightnessctl gvfs \
 		bluez bluez-utils lxappearance xfce4-settings \
 		catppuccin-gtk-theme-mocha dracula-icons-git xdg-desktop-portal-hyprland \
-		vencord ttf-vista-fonts btop \
+		vesktop-bin ttf-vista-fonts btop \
 		neovim zsh ripgrep \
 		jq stow npm \
 		unzip noto-fonts noto-fonts-cjk \
@@ -62,7 +62,7 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 		nerd-fonts cliphist firefox-developer-edition \
 		ly apple_cursor spicetify-cli \
 		wttrbar geoip hypridle \
-		hyprlock
+		hyprlock swaybg
 
 	systemctl enable ly
 
