@@ -37,91 +37,94 @@
 #### Check for yay ####
 ISYAY=/sbin/yay
 if [ -f "$ISYAY" ]; then
-	echo -e "yay was located, moving on.\n"
-	yay -Suy
+  echo -e "yay was located, moving on.\n"
+  yay -Suy
 else
-	echo -e "yay was not located, please install yay. Exiting script.\n"
-	exit
+  echo -e "yay was not located, please install yay. Exiting script.\n"
+  exit
 fi
 
 ### Install all of the above pacakges ####
 read -n1 -rep 'Would you like to install the packages? (y,n)' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
-	yay -S --noconfirm hyprland kitty waybar \
-		wofi mako thunar \
-		ttf-jetbrains-mono-nerd \
-		polkit-gnome python-requests \
-		grim slurp pamixer brightnessctl gvfs \
-		bluez bluez-utils lxappearance xfce4-settings \
-		catppuccin-gtk-theme-mocha dracula-icons-git xdg-desktop-portal-hyprland \
-		vesktop-bin ttf-vista-fonts btop \
-		neovim zsh ripgrep \
-		jq stow npm \
-		unzip noto-fonts noto-fonts-cjk \
-		noto-fonts-emoji noto-fonts-extra \
-		nerd-fonts cliphist firefox-developer-edition \
-		ly apple_cursor spicetify-cli \
-		wttrbar geoip hypridle \
-		hyprlock swaybg
+  yay -S --noconfirm hyprland kitty waybar \
+    fuzzel mako thunar \
+    ttf-jetbrains-mono-nerd \
+    polkit-gnome python-requests \
+    grim slurp pamixer brightnessctl gvfs \
+    bluez bluez-utils lxappearance xfce4-settings \
+    dracula-icons-git xdg-desktop-portal-hyprland \
+    vesktop-bin ttf-vista-fonts btop \
+    neovim zsh ripgrep \
+    jq stow npm \
+    unzip noto-fonts noto-fonts-cjk \
+    noto-fonts-emoji noto-fonts-extra \
+    nerd-fonts cliphist firefox-developer-edition \
+    ly apple_cursor spicetify-cli \
+    wttrbar geoip hypridle \
+    hyprlock swaybg papirus-icon-theme
 
-	systemctl enable ly
+  systemctl enable ly
 
-	# Start the bluetooth service
-	echo -e "Starting the Bluetooth Service...\n"
-	sudo systemctl enable --now bluetooth.service
-	sleep 2
+  # Start the bluetooth service
+  echo -e "Starting the Bluetooth Service...\n"
+  sudo systemctl enable --now bluetooth.service
+  sleep 2
 
-	# Clean out other portals
-	echo -e "Cleaning out conflicting xdg portals...\n"
-	yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
+  # Clean out other portals
+  echo -e "Cleaning out conflicting xdg portals...\n"
+  yay -R --noconfirm xdg-desktop-portal-gnome xdg-desktop-portal-gtk
 fi
 
 ### Set zsh as shell ###
 read -n1 -rep 'Would you like to set your shell to ZSH? (y,n)' ZSH
 if [[ $ZSH == "Y" || $ZSH == "y" ]]; then
-	sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 ### Copy Config Files ###
 read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
-	echo -e "Copying config files...\n"
+  echo -e "Copying config files...\n"
 
-	cp -R hypr ~/.config/
-	cp -R kitty ~/.config/
-	cp -R mako ~/.config/
-	cp -R waybar ~/.config/
-	cp -R swaylock ~/.config/
-	cp -R wofi ~/.config/
-	cp -R btop ~/.config/
-	cp -R vesktop ~/.config/
-	cp -R nvim ~/.config/
+  cp -R hypr ~/.config/
+  cp -R kitty ~/.config/
+  cp -R mako ~/.config/
+  cp -R waybar ~/.config/
+  cp -R swaylock ~/.config/
+  cp -R wofi ~/.config/
+  cp -R btop ~/.config/
+  cp -R vesktop ~/.config/
+  cp -R nvim ~/.config/
 
-	# Various Individual Files
-	cp ./various/heapbytes.zsh-theme ~/.oh-my-zsh/themes
-	cp ./various/.zshrc ~/.zshrc
+  # Various Individual Files
+  cp ./various/heapbytes.zsh-theme ~/.oh-my-zsh/themes
+  cp ./various/.zshrc ~/.zshrc
 
-	mkdir -p ~/.config/vesktop/themes/
-	mkdir -p ~/.config/vesktop/settings/
-	cp ./vesktop/themes/catppuccin-mocha.theme.css ~/.config/vesktop/themes
-	cp ./vesktop/settings/settings.json ~/.config/vesktop/settings/
+  mkdir -p ~/.config/vesktop/themes/
+  mkdir -p ~/.config/vesktop/settings/
+  cp ./vesktop/themes/ papirus-icon-them papirus-icon-them papirus-icon-themeeecatppuccin-mocha.theme.css ~/.config/vesktop/themes
+  cp ./vesktop/settings/settings.json ~/.config/vesktop/settings/
 
-	mkdir -p ~/.icons/default
-	ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
+  mkdir -p ~/.icons/default
+  ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
 
-	# Grub Theme
+  mkdir -p ~/.config/fuzzel
+  cp ./fuzzel/fuzzel.ini ~/.config/fuzzel/fuzzel.ini
 
-	sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
-	sudo cp ./various/grub /etc/default/grub
-	# Set Cursor
-	mkdir -p ~/.icons/default
+  # Grub Theme
 
-	# Set some files as exacutable
-	chmod +x ~/.config/hypr/xdg-portal-hyprland
-	chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+  sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
+  sudo cp ./various/grub /etc/default/grub
+  # Set Cursor
+  mkdir -p ~/.icons/default
 
-	# Set Catppuccin gsettings
-	gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Red-Dark
+  # Set some files as exacutable
+  chmod +x ~/.config/hypr/xdg-portal-hyprland
+  chmod +x ~/.config/waybar/scripts/waybar-wttr.py
+
+  # Set Catppuccin gsettings
+  gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Red-Dark
 
 fi
 
@@ -130,7 +133,7 @@ echo -e "Script had completed.\n"
 echo -e "You can start Hyprland by typing Hyprland (note the capital H).\n"
 read -n1 -rep 'Would you like to start Hyprland now? (y,n)' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
-	exec Hyprland
+  exec Hyprland
 else
-	exit
+  exit
 fi
