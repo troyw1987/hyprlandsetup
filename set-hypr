@@ -5,50 +5,34 @@
 # This script is meant to run on a clean fresh system
 #
 # Below is a list of the packages that would be installed
-#
-# hyprland: This is the Hyprland compositor
-# kitty: This is the default terminal
-# waybar: Waybar now has hyprland support
-# swaybg: This is used to set a desktop background image
-# swaylock-effects: This allows for the locking of the desktop its a fork that adds some editional visual effects
-# wofi: This is an application launcher menu
-# wlogout: This is a logout menu that allows for shutdown, reboot and sleep
-# mako: This is a graphical notification daemon
-# thunar: This is a graphical file manager
-# ttf-jetbrains-mono-nerd: Som nerd fonts for icons and overall look
-# noto-fonts-emoji: fonts needed by the weather script in the top bar
-# polkit-gnome: needed to get superuser access on some graphical appliaction
-# python-requests: needed for the weather module script to execute
-# starship: allows to customize the shell prompt
-# swappy: This is a screenshot editor tool
-# grim: This is a screenshot tool it grabs images from a Wayland compositor
-# slurp: This helps with screenshots, it selects a region in a Wayland compositor
-# pamixer: This helps with audio settings such as volume
-# brightnessctl: used to control monitor bright level
-# gvfs: adds missing functionality to thunar such as automount usb drives
-# bluez: the bluetooth service
-# bluez-utils: command line utilities to interact with bluettoth devices
-# lxappearance: used to set GTK theme
-# xfce4-settings: set of tools for xfce, needed to set GTK theme
-# dracula-gtk-theme: the Dracula theme, it fits the overall look and feel
-# dracula-icons-git" set of icons to go with the Dracula theme
-# xdg-desktop-portal-hyprland: xdg-desktop-portal backend for hyprland
+# TODO: ADD THE FUCKING LIST
 
 #### Check for yay ####
 ISYAY=/sbin/yay
 if [ -f "$ISYAY" ]; then
   echo -e "yay was located, moving on.\n"
-  yay -Suy
 else
-  echo -e "yay was not located, please install yay. Exiting script.\n"
-  exit
+  echo -e "yay was not located.\n"
+
+  read -n1 -rep "Would you like to install yay to continue this install? y/n: " YAYS
+  if [[ $YAYS == "Y" || $YAYS == y ]]; then
+    mkdir ~/git
+    cd ~/git
+    git clone https://aur.archlinux.org/yay.git
+    cd yay
+    makepkg -sic
+  else
+    echo -e "Unable to continue install without yay."
+    exit
+  fi
 fi
 
 ### Install all of the above pacakges ####
-read -n1 -rep 'Would you like to install the packages? (y,n)' INST
+read -n1 -rep 'Would you like to install the packages? y/n: ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
+  yay -Suy
   yay -S --noconfirm hyprland kitty waybar \
-    fuzzel mako thunar \
+    fuzzel mako nemo \
     ttf-jetbrains-mono-nerd \
     polkit-gnome python-requests \
     grim slurp pamixer brightnessctl gvfs \
@@ -77,63 +61,52 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
 fi
 
 ### Set zsh as shell ###
-read -n1 -rep 'Would you like to set your shell to ZSH? (y,n)' ZSH
+read -n1 -rep 'Would you like to set your shell to ZSH? y,n: ' ZSH
 if [[ $ZSH == "Y" || $ZSH == "y" ]]; then
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
 ### Copy Config Files ###
-read -n1 -rep 'Would you like to copy config files? (y,n)' CFG
+read -n1 -rep 'Would you like to copy config files? y/n: ' CFG
 if [[ $CFG == "Y" || $CFG == "y" ]]; then
   echo -e "Copying config files...\n"
 
-  cp -R hypr ~/.config/
-  cp -R kitty ~/.config/
-  cp -R mako ~/.config/
-  cp -R waybar ~/.config/
-  cp -R swaylock ~/.config/
-  cp -R wofi ~/.config/
-  cp -R btop ~/.config/
-  cp -R vesktop ~/.config/
-  cp -R nvim ~/.config/
+  cp -R ./various/* ~/.config/
 
   # Various Individual Files
-  cp ./various/heapbytes.zsh-theme ~/.oh-my-zsh/themes
-  cp ./various/.zshrc ~/.zshrc
+  # zsh:
+  cp ./individuals/zsh/heapbytes.zsh-theme ~/.oh-my-zsh/themes
+  cp ./individuals/zsh/.zshrc ~/.zshrc
 
+  # vesktop:
   mkdir -p ~/.config/vesktop/themes/
   mkdir -p ~/.config/vesktop/settings/
-  cp ./vesktop/themes/ papirus-icon-them papirus-icon-them papirus-icon-themeeecatppuccin-mocha.theme.css ~/.config/vesktop/themes
-  cp ./vesktop/settings/settings.json ~/.config/vesktop/settings/
+  cp ./various/vesktop/themes/catppuccin-mocha.theme.css ~/.config/vesktop/themes
+  cp ./various/vesktop/settings/settings.json ~/.config/vesktop/settings/
 
+  # icons + cursors:
   mkdir -p ~/.icons/default
-  ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
+  sudo ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
 
+  # fuzzel:
   mkdir -p ~/.config/fuzzel
-  cp ./fuzzel/fuzzel.ini ~/.config/fuzzel/fuzzel.ini
+  cp ./various/fuzzel/fuzzel.ini ~/.config/fuzzel/fuzzel.ini
 
-  # Grub Theme
-
-  sudo cp -r ./various/catppuccin-mocha-grub-theme /boot/EFI/BOOT/
-  sudo cp ./various/grub /etc/default/grub
-  # Set Cursor
-  mkdir -p ~/.icons/default
+  # nemo:
+  gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
 
   # Set some files as exacutable
   chmod +x ~/.config/hypr/xdg-portal-hyprland
-  chmod +x ~/.config/waybar/scripts/waybar-wttr.py
-
-  # Set Catppuccin gsettings
-  gsettings set org.gnome.desktop.interface gtk-theme Catppuccin-Mocha-Standard-Red-Dark
+  chmod +x ~/.config/waybar/scripts/weather.sh
 
 fi
 
 ### Script is done ###
 echo -e "Script had completed.\n"
-echo -e "You can start Hyprland by typing Hyprland (note the capital H).\n"
-read -n1 -rep 'Would you like to start Hyprland now? (y,n)' HYP
+read -n1 -rep 'Would you like to start Hyprland now? y/n: ' HYP
 if [[ $HYP == "Y" || $HYP == "y" ]]; then
   exec Hyprland
 else
+  echo -e "You can start Hyprland at any time by typing 'Hyprland'.\n(or you may restart the computer)"
   exit
 fi
