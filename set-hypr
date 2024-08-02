@@ -32,7 +32,7 @@ read -n1 -rep 'Would you like to install the packages? y/n: ' INST
 if [[ $INST == "Y" || $INST == "y" ]]; then
   yay -Suy
   yay -S --noconfirm hyprland kitty waybar \
-    fuzzel mako nemo \
+    ulauncher mako nemo \
     ttf-jetbrains-mono-nerd \
     polkit-gnome python-requests \
     grim slurp pamixer brightnessctl gvfs \
@@ -46,9 +46,18 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     nerd-fonts cliphist firefox-developer-edition \
     ly apple_cursor spicetify-cli \
     wttrbar geoip hypridle \
-    hyprlock swaybg papirus-icon-theme
+    hyprlock swaybg papirus-icon-theme \
+    tlp
 
   systemctl enable ly
+
+  echo -e "Getting zsh completion git...\n"
+
+  git clone https://github.com/marlonrichert/zsh-autocomplete.git
+  mv zsh-autocomplete ~/.config/
+
+  echo -e "Starting the TLP service..."
+  sudo systemctl enable tlp.service
 
   # Start the bluetooth service
   echo -e "Starting the Bluetooth Service...\n"
@@ -77,6 +86,7 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
   # zsh:
   cp ./individuals/zsh/heapbytes.zsh-theme ~/.oh-my-zsh/themes
   cp ./individuals/zsh/.zshrc ~/.zshrc
+  cp ./individuals/tlp/ /etc/tlp.conf
 
   # vesktop:
   mkdir -p ~/.config/vesktop/themes/
@@ -87,10 +97,6 @@ if [[ $CFG == "Y" || $CFG == "y" ]]; then
   # icons + cursors:
   mkdir -p ~/.icons/default
   sudo ln -s /usr/share/icons/macOS-BigSur/cursors ~/.icons/default/cursors
-
-  # fuzzel:
-  mkdir -p ~/.config/fuzzel
-  cp ./various/fuzzel/fuzzel.ini ~/.config/fuzzel/fuzzel.ini
 
   # nemo:
   gsettings set org.cinnamon.desktop.default-applications.terminal exec kitty
